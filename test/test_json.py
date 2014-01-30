@@ -1,6 +1,5 @@
 import unittest
 
-
 from neomodel import (
     StructuredNode,
     StringProperty, IntegerProperty,
@@ -9,6 +8,7 @@ from neomodel import (
 
 
 class TestC:
+
     def setUp(self):
         print("--")
 
@@ -29,6 +29,7 @@ class Person(StructuredNode):
 
 
 class TestA(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -40,7 +41,8 @@ class TestA(unittest.TestCase):
         jim.country.connect(germany)
         jim.delete()
         germany.delete()
-        assert germany.__json__() ==  {'code': 'DE'}
+        assert germany.__json__() == {'code': 'DE'}
         assert jim.__json__() == {'age': 3, 'name': 'Jim'}
+
 
 unittest.main()
