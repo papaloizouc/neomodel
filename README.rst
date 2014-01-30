@@ -318,8 +318,8 @@ You can serialize nodes to json in 3 ways:
 - Use the ``JsonEncoder`` and call ``dumps.(obc, cls=JsonEncoder)``
 - Patch ``json.dump`` / ``json.dumps`` to change default behaviour
 
-The encoder is looking for a __json__() function on the object.
-If __json__() doesnt exist it just behaves normally.::
+The encoder is looking for a ``__json__()`` function on the object.
+If ``__json__()`` doesnt exist it just behaves normally.::
 
     from neomodel import (
         json_encode, JsonEncoder, patch_json_dump, restore_patched_json_dump)
