@@ -29,6 +29,10 @@ class Person(StructuredNode):
     country = RelationshipTo(Country, 'IS_FROM')
 
 
+class NonSerializable:
+    pass
+
+
 class TestA(unittest.TestCase):
     def setUp(self):
         pass
@@ -45,6 +49,9 @@ class TestA(unittest.TestCase):
         assert jim.__json__() == {'age': 3, 'name': 'Jim'}
         assert serialize(jim) == json.dumps({'age': 3, 'name': 'Jim'})
         assert serialize(germany) == json.dumps({'code': 'DE'})
+
+        must_raise = lambda: serialize(NonSerializable())
+        self.assertRaises(TypeError, must_raise)
 
 
 unittest.main()
