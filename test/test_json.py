@@ -59,15 +59,15 @@ class TestA(unittest.TestCase):
             {"a": 1, "b": 2}, cls=JsonEncoder)
 
         patch_json_dump()
-        serializable_with_encoder = Serializable({"a": 1, "b": 2})
+        object = Serializable({"a": 1, "b": 2})
         # Now the default encoder is patched
-        # serializable_with_encoder should be encoded fine
-        assert json_encode({"a": 1, "b": 2}) == json.dumps(serializable_with_encoder)
+        # object should be encoded fine
+        assert json_encode({"a": 1, "b": 2}) == json.dumps(object)
 
         restore_patched_json_dump()
         # The Encoder is removed
-        # serializable_with_encoder should raise exception while serializing
-        _raises = lambda: json.dumps(serializable_with_encoder)
+        # object should raise exception while serializing
+        _raises = lambda: json.dumps(object)
         self.assertRaises(TypeError, _raises)
 
         # some some more patched tests
