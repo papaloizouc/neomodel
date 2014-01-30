@@ -276,6 +276,26 @@ def category_factory(instance_cls):
     return category
 
 
+def patch_json_dump():
+    """
+        Changes the behaviour of the builtin json.dumps and json.dump.
+        The new function looks for for __json__, if it exists is using that
+        to create json.
+    """
+    _fun_defaults = list(json.dumps.func_defaults)
+    _fun_defaults[4] = JsonEncoder
+    json.dumps.func_defaults = tuple(_fun_defaults)
+
+
+def restore_patched_json_dump():
+    """
+        Changes the behaviour of the builtin json.dumps and json.dump.
+        The new function looks for for __json__, if it exists is using that
+        to create json.
+    """
+    _fun_defaults = list(json.dumps.func_defaults)
+    _fun_defaults[4] = None
+    json.dumps.func_defaults = tuple(_fun_defaults)
 
 def json_encode(object):
     if not hasattr(object, "__json__"):

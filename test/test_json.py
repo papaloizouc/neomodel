@@ -5,7 +5,7 @@ from neomodel import (
     StructuredNode,
     StringProperty, IntegerProperty,
     RelationshipTo, RelationshipFrom,
-    json_encode, JsonEncoder
+    json_encode, JsonEncoder, patch_json_dump, restore_patched_json_dump
     )
 
 
@@ -23,6 +23,14 @@ class Person(StructuredNode):
 
 class NonSerializable:
     pass
+
+
+class Serializable:
+    def __init__(self, json_val):
+        self.json_val = json_val
+
+    def __json__(self):
+        return self.json_val
 
 
 class TestA(unittest.TestCase):
@@ -50,8 +58,21 @@ class TestA(unittest.TestCase):
         assert json_encode({"a": 1, "b": 2}) == json.dumps(
             {"a": 1, "b": 2}, cls=JsonEncoder)
 
-        must_raise = lambda: json_encode(NonSerializable())
-        self.assertRaises(TypeError, must_raise)
+        patch_json_dump()
+        serializable_with_encoder = Serializable({"a": 1, "b": 2})
+        # Now the default encoder is patched
+        # serializable_with_encoder should be encoded fine
+        assert json_encode({"a": 1, "b": 2}) == json.dumps(serializable_with_encoder)
 
+        restore_patched_json_dump()
+        # The Encoder is removed
+        # serializable_with_encoder should raise exception while serializing
+        _raises = lambda: json.dumps(serializable_with_encoder)
+        self.assertRaises(TypeError, _raises)
+
+        # some some more patched tests
+        patch_json_dump()
+        assert json_encode([1, 2, 3]) == json.dumps([1, 2, 3])
+        assert json_encode({"a": 1, "b": 2}) == json.dumps({"a": 1, "b": 2})
 
 unittest.main()
