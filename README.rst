@@ -314,9 +314,9 @@ JSON
 ----------
 You can serialize nodes to json in 3 ways:
 
-- Use the function json_encode and pass a node
-- Use the JsonEncoder and call dumps.(obc, cls=JsonEncoder)
-- Patch json.dump / json.dumps to change default behaviour
+- Use the function `json_encode` and pass a node
+- Use the `JsonEncoder` and call `dumps.(obc, cls=JsonEncoder)`
+- Patch `json.dump` / `json.dumps` to change default behaviour
 
 The encoder is looking for a __json__() function on the object.
 If __json__() doesnt exist it just behaves normally.::
