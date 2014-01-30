@@ -12,6 +12,7 @@ import os
 import time
 import sys
 import logging
+import json
 logger = logging.getLogger(__name__)
 
 if sys.version_info >= (3, 0):
@@ -273,3 +274,9 @@ def category_factory(instance_cls):
     }, category)
     category.instance.name = 'instance'
     return category
+
+
+def serialize(node):
+    if not hasattr(node, "__json__"):
+        raise TypeError(repr(node) + " is not JSON serializable. Override __json__()")
+    return json.dumps(node.__json__())
