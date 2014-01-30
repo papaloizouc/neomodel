@@ -283,6 +283,10 @@ def json_encode(object):
     return json.dumps(object.__json__())
 
 class JsonEncoder(json.JSONEncoder):
+
     def default(self, object):
-        return json_encode(object)
+        if not hasattr(object, "__json__"):
+            return object
+        return object.__json__()
+
 

@@ -5,7 +5,7 @@ from neomodel import (
     StructuredNode,
     StringProperty, IntegerProperty,
     RelationshipTo, RelationshipFrom,
-    json_encode
+    json_encode, JsonEncoder
     )
 
 
@@ -39,9 +39,16 @@ class TestA(unittest.TestCase):
         germany.delete()
         assert germany.__json__() == {'code': 'DE'}
         assert jim.__json__() == {'age': 3, 'name': 'Jim'}
-        #enssure encode works fine
+        # ensure encode works fine
         assert json_encode(jim) == json.dumps({'age': 3, 'name': 'Jim'})
         assert json_encode(germany) == json.dumps({'code': 'DE'})
+        # ensure JsonEncoder works with cls arg
+        assert json_encode(germany) == json.dumps(germany, cls=JsonEncoder)
+        assert json_encode(jim) == json.dumps(jim, cls=JsonEncoder)
+        # assert JsonEncoder doesn't break default behaviour
+        assert json_encode([1, 2, 3]) == json.dumps([1, 2, 3], cls=JsonEncoder)
+        assert json_encode({"a": 1, "b": 2}) == json.dumps(
+            {"a": 1, "b": 2}, cls=JsonEncoder)
 
         must_raise = lambda: json_encode(NonSerializable())
         self.assertRaises(TypeError, must_raise)
