@@ -293,9 +293,13 @@ def restore_patched_json_dump():
         The new function looks for for __json__, if it exists is using that
         to create json.
     """
-    _fun_defaults = list(json.dumps.func_defaults)
-    _fun_defaults[4] = None
-    json.dumps.func_defaults = tuple(_fun_defaults)
+    def patch_func(_func):
+        _fun_defaults = list(_func.func_defaults)
+        _fun_defaults[4] = None
+        json.dumps.func_defaults = tuple(_fun_defaults)
+
+    patch_func(json.dumps)
+    patch_func(json.dump)
 
 def json_encode(object):
     if not hasattr(object, "__json__"):
