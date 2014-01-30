@@ -296,21 +296,24 @@ def _patch_json(func, value):
     func.func_defaults = tuple(_fun_defaults)
 
 
-def patch_json_dump():
+def _patch_functions(functions, value):
+    funcs = functions if functions else [json.dump, json.dumps]
+    for func in funcs:
+        _patch_json(func, value)
+
+def patch_json_dump(functions=None):
     """
         Changes the behaviour of the builtin json.dumps and json.dump.
         The new function looks for for __json__, if it exists is using that
         to create json.
     """
-    _patch_json(json.dump, JsonEncoder)
-    _patch_json(json.dumps, JsonEncoder)
+    _patch_functions(functions, JsonEncoder)
 
 
-def restore_patched_json_dump():
+def restore_patched_json_dump(functions=None):
     """
         Changes the behaviour of the builtin json.dumps and json.dump.
         The new function looks for for __json__, if it exists is using that
         to create json.
     """
-    _patch_json(json.dump, None)
-    _patch_json(json.dumps, None)
+    _patch_functions(functions, None)
