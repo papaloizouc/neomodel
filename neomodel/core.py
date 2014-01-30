@@ -276,7 +276,13 @@ def category_factory(instance_cls):
     return category
 
 
-def serialize(node):
-    if not hasattr(node, "__json__"):
-        raise TypeError(repr(node) + " is not JSON serializable. Override __json__()")
-    return json.dumps(node.__json__())
+
+def json_encode(object):
+    if not hasattr(object, "__json__"):
+        return json.dumps(object)
+    return json.dumps(object.__json__())
+
+class JsonEncoder(json.JSONEncoder):
+    def default(self, object):
+        return json_encode(object)
+

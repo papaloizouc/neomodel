@@ -5,16 +5,8 @@ from neomodel import (
     StructuredNode,
     StringProperty, IntegerProperty,
     RelationshipTo, RelationshipFrom,
-    serialize
+    json_encode
     )
-
-
-class TestC:
-    def setUp(self):
-        print("--")
-
-    def test_a(self):
-        print("--")
 
 
 class Country(StructuredNode):
@@ -47,10 +39,11 @@ class TestA(unittest.TestCase):
         germany.delete()
         assert germany.__json__() == {'code': 'DE'}
         assert jim.__json__() == {'age': 3, 'name': 'Jim'}
-        assert serialize(jim) == json.dumps({'age': 3, 'name': 'Jim'})
-        assert serialize(germany) == json.dumps({'code': 'DE'})
+        #enssure encode works fine
+        assert json_encode(jim) == json.dumps({'age': 3, 'name': 'Jim'})
+        assert json_encode(germany) == json.dumps({'code': 'DE'})
 
-        must_raise = lambda: serialize(NonSerializable())
+        must_raise = lambda: json_encode(NonSerializable())
         self.assertRaises(TypeError, must_raise)
 
 
