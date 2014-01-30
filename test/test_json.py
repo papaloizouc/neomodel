@@ -1,14 +1,15 @@
 import unittest
+import json
 
 from neomodel import (
     StructuredNode,
     StringProperty, IntegerProperty,
-    RelationshipTo, RelationshipFrom
-)
+    RelationshipTo, RelationshipFrom,
+    serialize
+    )
 
 
 class TestC:
-
     def setUp(self):
         print("--")
 
@@ -29,7 +30,6 @@ class Person(StructuredNode):
 
 
 class TestA(unittest.TestCase):
-
     def setUp(self):
         pass
 
@@ -43,6 +43,8 @@ class TestA(unittest.TestCase):
         germany.delete()
         assert germany.__json__() == {'code': 'DE'}
         assert jim.__json__() == {'age': 3, 'name': 'Jim'}
+        assert serialize(jim) == json.dumps({'age': 3, 'name': 'Jim'})
+        assert serialize(germany) == json.dumps({'code': 'DE'})
 
 
 unittest.main()
