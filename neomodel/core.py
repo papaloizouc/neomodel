@@ -314,13 +314,13 @@ def _patch_functions(functions, value):
         _patch_json(func, value)
 
 
-def patch_json_dump(functions=None):
+def patch_json_dump(functions=None, encoder=JsonEncoder):
     """
         Changes the behaviour of the builtin json.dumps and json.dump.
         The new function looks for for __json__, if it exists is using that
         to create json.
     """
-    _patch_functions(functions, JsonEncoder)
+    _patch_functions(functions, encoder)
 
 
 def restore_patched_json_dump(functions=None):
