@@ -277,27 +277,27 @@ def category_factory(instance_cls):
     return category
 
 
-def json_encode(object):
-    if not hasattr(object, "__json__"):
-        return json.dumps(object)
-    return json.dumps(object.__json__())
+def json_encode(obj):
+    if not hasattr(obj, "__json__"):
+        return json.dumps(obj)
+    return json.dumps(obj.__json__())
 
 
 class JsonEncoder(json.JSONEncoder):
-    def default(self, object):
-        if not hasattr(object, "__json__"):
-            return object
-        return object.__json__()
+    def default(self, obj):
+        if not hasattr(obj, "__json__"):
+            return obj
+        return obj.__json__()
 
 
 def simple_json_encoder():
     import simplejson
 
     class SimpleJsonEncoder(simplejson.JSONEncoder):
-        def default(self, object):
-            if not hasattr(object, "__json__"):
-                return object
-            return object.__json__()
+        def default(self, obj):
+            if not hasattr(obj, "__json__"):
+                return obj
+            return obj.__json__()
 
     return SimpleJsonEncoder
 
