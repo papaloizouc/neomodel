@@ -290,6 +290,18 @@ class JsonEncoder(json.JSONEncoder):
         return object.__json__()
 
 
+def simple_json_encoder():
+    import simplejson
+
+    class SimpleJsonEncoder(simplejson.JSONEncoder):
+        def default(self, object):
+            if not hasattr(object, "__json__"):
+                return object
+            return object.__json__()
+
+    return SimpleJsonEncoder
+
+
 def _patch_json(func, value):
     _fun_defaults = list(func.func_defaults)
     _fun_defaults[4] = value
@@ -300,6 +312,7 @@ def _patch_functions(functions, value):
     funcs = functions if functions else [json.dump, json.dumps]
     for func in funcs:
         _patch_json(func, value)
+
 
 def patch_json_dump(functions=None):
     """
