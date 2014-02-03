@@ -339,3 +339,9 @@ If ``__json__()`` doesnt exist it just behaves normally.::
     # The build in dump/dumps have been patched to include the JsonEncoder
     json.dumps(jim)
 
+    #patch simplejson
+    from neomodel import patch_json_dump, simple_json_encoder
+    import simplejson
+    patch_json_dump(functions = [simplejson.dumps, simplejson.dumps], encoder=simple_json_encoder())
+
+
