@@ -285,9 +285,11 @@ def json_encode(obj):
 
 class JsonEncoder(json.JSONEncoder):
     def default(self, obj):
-        if not hasattr(obj, "__json__"):
-            return obj
-        return obj.__json__()
+        if hasattr(obj, 'isoformat'):
+            return obj.isoformat()
+        elif hasattr(obj, "__json__"):
+            return obj.__json__()
+        return obj
 
 
 def simple_json_encoder():
@@ -295,9 +297,11 @@ def simple_json_encoder():
 
     class SimpleJsonEncoder(simplejson.JSONEncoder):
         def default(self, obj):
-            if not hasattr(obj, "__json__"):
-                return obj
-            return obj.__json__()
+            if hasattr(obj, 'isoformat'):
+                return obj.isoformat()
+            elif hasattr(obj, "__json__"):
+                return obj.__json__()
+            return obj
 
     return SimpleJsonEncoder
 
